@@ -1,0 +1,23 @@
+.footer {
+    background: var(--primary);
+    color: white;
+    padding: 4rem 0 2rem;
+    margin-top: 4rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 3rem;
+}
+
+.footer-info .logo {
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.footer-info p {
+    color: #aaa;
+    max-width: 300px;
+}
