@@ -51,3 +51,18 @@
     width: 100%;
 }
 
+.icon-btn {
+    color: var(--text);
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    position: relative;
+}
+
+.icon-btn:hover {
+    background: var(--border);
+    transform: translateY(-2px);
+}
