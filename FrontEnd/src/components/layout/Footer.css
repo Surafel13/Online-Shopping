@@ -21,3 +21,20 @@
     color: #aaa;
     max-width: 300px;
 }
+
+
+.footer-links h4 {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-links ul li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links ul li a {
+    color: #aaa;
+    font-size: 0.9rem;
+}
