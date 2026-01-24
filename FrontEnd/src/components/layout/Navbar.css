@@ -66,3 +66,31 @@
     background: var(--border);
     transform: translateY(-2px);
 }
+
+
+.cart-btn {
+    background: var(--primary);
+    color: white;
+}
+
+.cart-btn:hover {
+    background: #333;
+    color: white;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--accent);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
