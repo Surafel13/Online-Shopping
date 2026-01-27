@@ -119,3 +119,28 @@
 .order-totals {
     margin-top: 2rem;
 }
+
+.total-row {
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.grand-total {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--primary);
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.checkout-form-container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.checkout-form-container h3 {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
