@@ -76,3 +76,46 @@
     object-fit: cover;
     border-radius: var(--radius-sm);
 }
+
+.item-details {
+    flex: 1;
+}
+
+.item-header h4 {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.remove-btn {
+    color: #ff4757;
+    opacity: 0.6;
+}
+
+.remove-btn:hover {
+    opacity: 1;
+}
+
+.item-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.quantity-controls button {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.item-price {
+    font-weight: 700;
+}
+
+.order-totals {
+    margin-top: 2rem;
+}
