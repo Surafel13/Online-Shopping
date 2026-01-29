@@ -124,3 +124,52 @@
     background: #222;
     transform: translateY(-1px);
 }
+
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.auth-footer a {
+    color: var(--primary);
+    font-weight: 700;
+    margin-left: 0.3rem;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.admin-hint {
+    margin-top: 1.5rem;
+    padding: 0.8rem;
+    background: #fff5f5;
+    border-radius: var(--radius-sm);
+    color: #c53030;
+    font-size: 0.8rem;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .auth-wrapper {
+        flex-direction: column;
+        min-height: auto;
+        width: 100%;
+        margin: 1rem;
+    }
+
+    .auth-image-side {
+        height: 200px;
+        flex: none;
+    }
+
+    .auth-image-content {
+        display: none;
+    }
+
+    .auth-form-side {
+        padding: 2rem;
+    }
+}
