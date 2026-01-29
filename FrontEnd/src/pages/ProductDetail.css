@@ -124,3 +124,25 @@
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
+
+.extra-info {
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+}
+
+.extra-info p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 992px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .image-section {
+        position: static;
+    }
+}
