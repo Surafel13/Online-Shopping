@@ -19,3 +19,41 @@
     gap: 4rem;
     align-items: start;
 }
+
+
+.image-section {
+    position: sticky;
+    top: 100px;
+}
+
+.main-image {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.category-tag {
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.product-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.rating {
+    margin-bottom: 1.5rem;
+    color: #ffb800;
+    font-size: 0.9rem;
+}
+
+.rating span {
+    color: var(--text-muted);
+    margin-left: 0.5rem;
+}
