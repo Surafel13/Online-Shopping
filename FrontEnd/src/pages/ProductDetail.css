@@ -84,3 +84,43 @@
     font-size: 0.8rem;
     letter-spacing: 1px;
 }
+
+.option-btn {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.option-btn:hover {
+    border-color: var(--primary);
+}
+
+.option-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    padding: 1.2rem;
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    transition: var(--transition);
+    margin-bottom: 2rem;
+}
+
+.add-to-cart-btn:hover {
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
