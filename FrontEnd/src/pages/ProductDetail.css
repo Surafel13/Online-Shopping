@@ -57,3 +57,30 @@
     color: var(--text-muted);
     margin-left: 0.5rem;
 }
+
+.price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+.description {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.selection-group {
+    margin-bottom: 2rem;
+}
+
+.selection-group label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
