@@ -17,6 +17,17 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
+// Routes
+import UserRouter from "./routes/UserRoutes.js";
+
+
+
+app.use("/api/users", UserRouter);
+
+
+
+
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Online Shopping API");
