@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, User, LogOut, LayoutDashboard } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ShoppingBag, User, LogOut, LayoutDashboard, Menu, X } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
@@ -8,26 +8,38 @@ import './Navbar.css';
 const Navbar = () => {
     const { cartItems } = useCart();
     const { user, logout, isAdmin } = useAuth();
-    const navigate = useNavigate();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
+    const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
     return (
         <nav className="navbar">
-            <div className="container flex justify-between items-center">
+            <div className="container navbar-container flex justify-between items-center">
                 <Link to="/" className="logo">
                     GLAM<span>CO</span>
                 </Link>
 
-                <div className="nav-links flex items-center gap-8">
-                    <Link to="/" className="nav-link">Home</Link>
-                    <Link to="/?category=men" className="nav-link">Men</Link>
-                    <Link to="/?category=women" className="nav-link">Women</Link>
-                    <Link to="/?category=kids" className="nav-link">Kids</Link>
-                    <Link to="/?category=electronics" className="nav-link">Electronics</Link>
+                <div className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
+                    <Link to="/" onClick={closeMobileMenu} className="nav-link">Home</Link>
+                    <Link to="/?category=men" onClick={closeMobileMenu} className="nav-link">Men</Link>
+                    <Link to="/?category=women" onClick={closeMobileMenu} className="nav-link">Women</Link>
+                    <Link to="/?category=kids" onClick={closeMobileMenu} className="nav-link">Kids</Link>
+                    <Link to="/?category=electronics" onClick={closeMobileMenu} className="nav-link">Electronics</Link>
                 </div>
 
                 <div className="nav-actions flex items-center gap-4">
+                    <button
+                        type="button"
+                        className="icon-btn nav-toggle"
+                        aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                        aria-expanded={isMobileMenuOpen}
+                        onClick={() => setIsMobileMenuOpen(v => !v)}
+                    >
+                        {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                    </button>
+
                     {isAdmin && (
                         <Link title="Admin Dashboard" to="/admin" className="icon-btn">
                             <LayoutDashboard size={20} />
