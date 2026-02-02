@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import './bootstrap.css';
 
 // Protected Route for Admin
 const AdminRoute = ({ children }) => {

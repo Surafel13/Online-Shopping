@@ -16,7 +16,7 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <div className="container navbar-container flex justify-between items-center">
+            <div className="container navbar-container flex justify-between items-center w-full">
                 <Link to="/" className="logo">
                     GLAM<span>CO</span>
                 </Link>
