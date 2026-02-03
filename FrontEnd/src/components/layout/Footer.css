@@ -1,5 +1,5 @@
 .footer {
-    background: var(--primary);
+    background: linear-gradient(135deg, #0f0f0f 0%, #1b1b1b 45%, #111 100%);
     color: white;
     padding: 4rem 0 2rem;
     margin-top: 4rem;
@@ -57,5 +57,9 @@
     .footer-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
+    }
+
+    .footer {
+        padding: 3rem 0 2rem;
     }
 }

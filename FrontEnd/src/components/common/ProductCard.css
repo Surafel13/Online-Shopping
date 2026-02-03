@@ -1,14 +1,16 @@
 .product-card {
     background: white;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
     position: relative;
+    border: 1px solid rgba(236, 230, 223, 0.9);
 }
 
 .product-card:hover {
     box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
 }
 
 .product-image {
@@ -33,7 +35,7 @@
 .product-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -67,7 +69,7 @@
     position: absolute;
     top: 1rem;
     left: 1rem;
-    background: white;
+    background: rgba(255, 255, 255, 0.9);
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
     font-size: 0.75rem;

@@ -49,7 +49,7 @@ const ProductDetail = () => {
                         <div className="stars flex">
                             {[1, 2, 3, 4, 5].map(i => <Star key={i} size={16} fill="currentColor" />)}
                         </div>
-                        <span>(4.8 • 120 reviews)</span>
+                        <span>(4.8 - 120 reviews)</span>
                     </div>
                     <p className="price">${product.price.toFixed(2)}</p>
                     <p className="description">{product.description}</p>
