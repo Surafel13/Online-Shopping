@@ -1,20 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { products } from '../utils/dummyData';
 import { useCart } from '../context/CartContext';
 import { ShoppingBag, ChevronLeft, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { fetchProductById } from '../utils/api';
+import { normalizeProduct } from '../utils/productMapper';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { addToCart } = useCart();
-    const product = products.find(p => p.id === parseInt(id));
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-    const [selectedSize, setSelectedSize] = useState(product?.sizes[0] || '');
-    const [selectedColor, setSelectedColor] = useState(product?.colors[0] || '');
+    const [selectedSize, setSelectedSize] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
 
+    useEffect(() => {
+        let isMounted = true;
+        setLoading(true);
+        setError('');
+        fetchProductById(id)
+            .then(data => {
+                if (!isMounted) return;
+                const normalized = normalizeProduct(data);
+                setProduct(normalized);
+                setSelectedSize(normalized.sizes[0] || 'Default');
+                setSelectedColor(normalized.colors[0] || 'Default');
+            })
+            .catch(err => {
+                if (!isMounted) return;
+                setError(err.message || 'Product not found');
+            })
+            .finally(() => {
+                if (!isMounted) return;
+                setLoading(false);
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [id]);
+
+    if (loading) return <div className="container section-padding">Loading product...</div>;
+    if (error) return <div className="container section-padding">{error}</div>;
     if (!product) return <div className="container section-padding">Product not found</div>;
 
     const handleAddToCart = () => {
@@ -35,7 +66,7 @@ const ProductDetail = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                 >
-                    <img src={product.image} alt={product.name} className="main-image" />
+                    <img src={product.image || product.imageUrl} alt={product.name} className="main-image" />
                 </motion.div>
 
                 <motion.div

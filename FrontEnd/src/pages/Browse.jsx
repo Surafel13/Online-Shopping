@@ -1,22 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { products } from '../utils/dummyData';
 import ProductCard from '../components/common/ProductCard';
-import { Filter } from 'lucide-react';
+import { fetchProducts } from '../utils/api';
+import { normalizeProduct } from '../utils/productMapper';
 import './Browse.css';
 
 const Browse = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const categoryFilter = searchParams.get('category') || 'all';
-    const [filteredProducts, setFilteredProducts] = useState(products);
+    const [allProducts, setAllProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        let isMounted = true;
+        setLoading(true);
+        setError('');
+        fetchProducts()
+            .then(data => {
+                if (!isMounted) return;
+                const normalized = data.map(normalizeProduct);
+                setAllProducts(normalized);
+            })
+            .catch(err => {
+                if (!isMounted) return;
+                setError(err.message || 'Failed to load products.');
+            })
+            .finally(() => {
+                if (!isMounted) return;
+                setLoading(false);
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     useEffect(() => {
         if (categoryFilter === 'all') {
-            setFilteredProducts(products);
+            setFilteredProducts(allProducts);
         } else {
-            setFilteredProducts(products.filter(p => p.category === categoryFilter));
+            setFilteredProducts(allProducts.filter(p => p.category === categoryFilter));
         }
-    }, [categoryFilter]);
+    }, [categoryFilter, allProducts]);
 
     const setCategory = (cat) => {
         if (cat === 'all') {
@@ -51,11 +78,21 @@ const Browse = () => {
                 </div>
             </div>
 
-            <div className="products-grid">
-                {filteredProducts.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
-            </div>
+            {loading && (
+                <div className="results-count">Loading products...</div>
+            )}
+
+            {error && (
+                <div className="results-count">{error}</div>
+            )}
+
+            {!loading && !error && (
+                <div className="products-grid">
+                    {filteredProducts.map(product => (
+                        <ProductCard key={product.id} product={product} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

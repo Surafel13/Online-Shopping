@@ -1,46 +1,101 @@
-import React, { useState } from 'react';
-import { products as initialProducts } from '../../utils/dummyData';
-import { Plus, Edit2, Trash2, Search, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Plus, Edit2, Trash2, X } from 'lucide-react';
+import { createProduct, deleteProduct, fetchProducts, updateProduct } from '../../utils/api';
+import { normalizeProduct } from '../../utils/productMapper';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
-    const [products, setProducts] = useState(initialProducts);
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         price: '',
         category: 'men',
-        image: '',
-        description: ''
+        imageUrl: '',
+        description: '',
+        quantity: 1
     });
+
+    useEffect(() => {
+        let isMounted = true;
+        setLoading(true);
+        setError('');
+        fetchProducts()
+            .then(data => {
+                if (!isMounted) return;
+                setProducts(data.map(normalizeProduct));
+            })
+            .catch(err => {
+                if (!isMounted) return;
+                setError(err.message || 'Failed to load products.');
+            })
+            .finally(() => {
+                if (!isMounted) return;
+                setLoading(false);
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     const handleOpenModal = (product = null) => {
         if (product) {
             setEditingProduct(product);
-            setFormData(product);
+            setFormData({
+                name: product.name || '',
+                price: product.price || '',
+                category: product.category || 'men',
+                imageUrl: product.imageUrl || product.image || '',
+                description: product.description || '',
+                quantity: product.quantity || 1
+            });
         } else {
             setEditingProduct(null);
-            setFormData({ name: '', price: '', category: 'men', image: '', description: '' });
+            setFormData({ name: '', price: '', category: 'men', imageUrl: '', description: '', quantity: 1 });
         }
         setShowModal(true);
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this product?")) {
-            setProducts(products.filter(p => p.id !== id));
+            try {
+                await deleteProduct(id);
+                setProducts(products.filter(p => p.id !== id));
+            } catch (err) {
+                alert(err.message || 'Failed to delete product.');
+            }
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (editingProduct) {
-            setProducts(products.map(p => p.id === editingProduct.id ? { ...formData, id: p.id } : p));
-        } else {
-            const newProduct = { ...formData, id: Date.now(), price: parseFloat(formData.price) };
-            setProducts([newProduct, ...products]);
+        const payload = {
+            name: formData.name,
+            description: formData.description,
+            price: parseFloat(formData.price),
+            category: formData.category,
+            quantity: parseInt(formData.quantity, 10),
+            imageUrl: formData.imageUrl
+        };
+
+        try {
+            if (editingProduct) {
+                const response = await updateProduct(editingProduct.id, payload);
+                const updated = normalizeProduct(response.product || payload);
+                setProducts(products.map(p => p.id === editingProduct.id ? { ...p, ...updated } : p));
+            } else {
+                const response = await createProduct(payload);
+                const created = normalizeProduct(response.product || payload);
+                setProducts([created, ...products]);
+            }
+            setShowModal(false);
+        } catch (err) {
+            alert(err.message || 'Failed to save product.');
         }
-        setShowModal(false);
     };
 
     return (
@@ -56,40 +111,44 @@ const AdminDashboard = () => {
             </div>
 
             <div className="admin-table-container">
-                <table className="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.map(product => (
-                            <tr key={product.id}>
-                                <td>
-                                    <img src={product.image} alt={product.name} className="table-img" />
-                                </td>
-                                <td>
-                                    <div className="product-name-cell">
-                                        <strong>{product.name}</strong>
-                                        <span className="info-short">{product.description?.substring(0, 40)}...</span>
-                                    </div>
-                                </td>
-                                <td><span className="badge">{product.category}</span></td>
-                                <td><strong>${product.price}</strong></td>
-                                <td>
-                                    <div className="actions flex gap-2">
-                                        <button className="edit-btn" onClick={() => handleOpenModal(product)}><Edit2 size={16} /></button>
-                                        <button className="delete-btn" onClick={() => handleDelete(product.id)}><Trash2 size={16} /></button>
-                                    </div>
-                                </td>
+                {loading && <p className="info-short">Loading products...</p>}
+                {error && <p className="info-short">{error}</p>}
+                {!loading && !error && (
+                    <table className="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {products.map(product => (
+                                <tr key={product.id}>
+                                    <td>
+                                        <img src={product.image || product.imageUrl} alt={product.name} className="table-img" />
+                                    </td>
+                                    <td>
+                                        <div className="product-name-cell">
+                                            <strong>{product.name}</strong>
+                                            <span className="info-short">{product.description?.substring(0, 40)}...</span>
+                                        </div>
+                                    </td>
+                                    <td><span className="badge">{product.category}</span></td>
+                                    <td><strong>${product.price}</strong></td>
+                                    <td>
+                                        <div className="actions flex gap-2">
+                                            <button className="edit-btn" onClick={() => handleOpenModal(product)}><Edit2 size={16} /></button>
+                                            <button className="delete-btn" onClick={() => handleDelete(product.id)}><Trash2 size={16} /></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
 
             {showModal && (
@@ -121,6 +180,16 @@ const AdminDashboard = () => {
                                     />
                                 </div>
                                 <div className="form-group flex-1">
+                                    <label>Quantity</label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        value={formData.quantity}
+                                        onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group flex-1">
                                     <label>Category</label>
                                     <select
                                         value={formData.category}
@@ -137,8 +206,8 @@ const AdminDashboard = () => {
                                 <label>Image URL</label>
                                 <input
                                     type="text"
-                                    value={formData.image}
-                                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                                    value={formData.imageUrl}
+                                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                                     required
                                 />
                             </div>

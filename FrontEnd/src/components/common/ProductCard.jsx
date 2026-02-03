@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
+    const productId = product.id || product._id;
+    const imageSrc = product.image || product.imageUrl;
+
     return (
         <motion.div
             className="product-card"
@@ -12,9 +15,9 @@ const ProductCard = ({ product }) => {
             layout
         >
             <div className="product-image">
-                <img src={product.image} alt={product.name} />
+                <img src={imageSrc} alt={product.name} />
                 <div className="product-overlay">
-                    <Link to={`/product/${product.id}`} className="overlay-btn">
+                    <Link to={`/product/${productId}`} className="overlay-btn">
                         <Eye size={18} /> Quick View
                     </Link>
                 </div>

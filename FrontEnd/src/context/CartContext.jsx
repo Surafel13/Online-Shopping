@@ -8,9 +8,11 @@ export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
 
     const addToCart = (product, selections) => {
+        const productId = product.id || product._id;
+        const image = product.image || product.imageUrl;
         setCartItems(prev => {
             const existing = prev.find(item =>
-                item.id === product.id &&
+                item.id === productId &&
                 item.selectedColor === selections.color &&
                 item.selectedSize === selections.size
             );
@@ -21,7 +23,7 @@ export const CartProvider = ({ children }) => {
                 );
             }
 
-            return [...prev, { ...product, ...selections, quantity: 1 }];
+            return [...prev, { ...product, id: productId, image, ...selections, quantity: 1 }];
         });
     };
 

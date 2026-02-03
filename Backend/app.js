@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import cors from "cors";
 
 dotenv.config();
 
@@ -14,15 +15,22 @@ mongoose
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 
 
 // Routes
 import UserRouter from "./routes/UserRoutes.js";
+import ProductRouter from "./routes/ProductRoute.js";
+import CatagoryRouter from "./routes/CatagoryRoute.js";
+import OrderRouter from "./routes/OrderRoute.js";
 
 
 
 app.use("/api/users", UserRouter);
+app.use("/api/products", ProductRouter);
+app.use("/api/categories", CatagoryRouter);
+app.use("/api/orders", OrderRouter);
 
 
 
